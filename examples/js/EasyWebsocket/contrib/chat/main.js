@@ -68,9 +68,7 @@ var ChatAnywhere	 = function()
 			if (num > 1 && num > noVotes1)
 				sendVideoURL(proposedVid1);
 		}
-			
 		
-
 		jQuery("#voteContainer" + voteBoxNum + " .voteHeader" + voteBoxNum + " .yesVotes" + voteBoxNum).empty().text(num);
 	}
 	
@@ -356,16 +354,6 @@ var ChatAnywhere	 = function()
 		sendConnected();	
 	}
 	
-	var sendConnected = function(){
-		socketSend({
-			type	: "connected",
-			data	: {
-				username: username,
-				connected: true,
-			}
-		});
-	}
-	
 	// onMessage of socket
 	socket.onmessage= function(event){
 		var event	= JSON.parse(event.data);
@@ -379,15 +367,10 @@ var ChatAnywhere	 = function()
 		}else if( event.type == "rename" ){
 			setRename(event.data);
 		}else if( event.type == "change" ){
-			alert("video being changed to "+event.data.message);
-			var myvideo = document.getElementById('video');
-			console.log(myvideo.src);
-			myvideo.pause();
-			myvideo.src = target;
-			console.log(myvideo.src);
-			myvideo.play();
+			setvideo(event.data.message);
 		}else if( event.type == "connected"){			
 			if (event.data.username != username){
+				sendVideoURL();
 				UpdateVoterBoxes(username, yesVotes1, yesVotes2, yesVotes3, yesVotes4, yesVotes5,
 								 noVotes1, noVotes2, noVotes3, noVotes4, noVotes5,
 								 proposedVid1, proposedVid2, proposedVid3, proposedVid4, proposedVid5);
@@ -417,7 +400,7 @@ var ChatAnywhere	 = function()
 		}else if( event.type == "videoURL"){
 			if (event.data.username != username){
 				setVideoURL(event.data.videoURL);
-			}			
+			}		
 		}else{
 			//console.log("unhandled event in socket message")
 		}
@@ -547,6 +530,27 @@ var ChatAnywhere	 = function()
 		}
 	}
 	
+	// Modification by Aaron Craft 04/19/2011	
+	var sendConnected = function(){
+		socketSend({
+			type	: "connected",
+			data	: {
+				username: username,
+				connected: true,
+			}
+		});
+	}
+	var sendVideoURL = function(){
+		socketSend({
+			type	: "videoURL",
+			data	: {
+				username: username,
+				videoURL: document.getElementById("video").src,
+			}
+		});
+	}
+	// End Modification by Aaron Craft 04/19/2011	
+	
 	// sendJoin
 	var sendJoin	= function(username){
 		socketSend({
@@ -574,19 +578,6 @@ var ChatAnywhere	 = function()
 			data	: {
 				newUsername: newUsername,
 				oldUsername: oldUsername
-			}
-		});
-	}
-	
-	var sendVideoURL = function(vidURL){
-		vidURL = vidURL.replace("/propose ", "");
-		setVideoURL(vidURL);
-		socketSend({
-			type	: "videoURL",
-			data	: {
-				username: username,
-				videoURL: vidURL,
-				currentTime: 0
 			}
 		});
 	}
