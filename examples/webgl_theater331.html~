@@ -61,7 +61,7 @@
 	  
 	  <!-- Begin Add/Modify ~ Adam Craft 04-13-2011 -->
 	  <!-- VOTE BOX #1 -->
-	  <div id="voteContainer1" style="position: absolute; left: 0px; top: 50px; z-index: 2000">
+	  <div id="voteContainer1" style="position: absolute; left: 0px; top: 20px; z-index: 2000">
 		  <div class="voteHeader1">
 			  <span class="yesVoteLabel1">Yes:</span>
 			  <span class="yesVotes1">0</span>
@@ -80,7 +80,7 @@
 		  </div>
 	  </div>
 	  <!-- VOTE BOX #2 -->
-	  <div id="voteContainer2" style="position: absolute; left: 0; top: 150px; z-index: 2000">
+	  <div id="voteContainer2" style="position: absolute; left: 0; top: 120px; z-index: 2000">
 		  <div class="voteHeader2">
 			  <span class="yesVoteLabel2">Yes:</span>
 			  <span class="yesVotes2">0</span>
@@ -99,7 +99,7 @@
 		  </div>
 	  </div>
 	  <!-- VOTE BOX #3 -->
-	  <div id="voteContainer3" style="position: absolute; left: 0px; top: 250px; z-index: 2000">
+	  <div id="voteContainer3" style="position: absolute; left: 0px; top: 220px; z-index: 2000">
 		  <div class="voteHeader3">
 			  <span class="yesVoteLabel3">Yes:</span>
 			  <span class="yesVotes3">0</span>
@@ -118,7 +118,7 @@
 		  </div>
 	  </div>
 	  <!-- VOTE BOX #4 -->
-	  <div id="voteContainer4" style="position: absolute; left: 0px; top: 350px; z-index: 2000">
+	  <div id="voteContainer4" style="position: absolute; left: 0px; top: 320px; z-index: 2000">
 		  <div class="voteHeader4">
 			  <span class="yesVoteLabel4">Yes:</span>
 			  <span class="yesVotes4">0</span>
@@ -137,7 +137,7 @@
 		  </div>
 	  </div>
 	  <!-- VOTE BOX #5 -->
-	  <div id="voteContainer5" style="position: absolute; left: 0px; top: 450px; z-index: 2000">
+	  <div id="voteContainer5" style="position: absolute; left: 0px; top: 420px; z-index: 2000">
 		  <div class="voteHeader5">
 			  <span class="yesVoteLabel5">Yes:</span>
 			  <span class="yesVotes5">0</span>
