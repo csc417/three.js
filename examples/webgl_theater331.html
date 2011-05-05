@@ -1,0 +1,624 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>'Movie Theater 331'</title>
+		<meta charset="utf-8">
+		<style type="text/css">
+			body {
+				background-color: #000;
+				color: #fff;
+				margin: 0px;
+				overflow: hidden;
+				font-family:Monospace;
+				font-size:13px;
+				text-align:center;
+				font-weight: bold;
+				text-align:center;
+			}
+
+			a {
+				color:#0078ff;
+			}
+
+			#info {
+				color:#fff;
+				position: absolute;
+				top: 0px; width: 100%;
+				padding: 5px;
+				z-index:100;
+			}
+
+		</style>
+		    <!--<link rel="stylesheet" href="js/EasyWebsocket/contrib/chat/main.css" />-->
+		    <!-- json2 is included because some browsers doesnt have it (e.g. ie8)	-->
+		    <script src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>		
+		    <script src="js/EasyWebsocket/easyWebSocket.min.js"></script>
+		    
+		    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+		    <script src="js/EasyWebsocket/contrib/chat/jquery.tmpl.min.js"></script>
+		    <script src="js/EasyWebsocket/contrib/chat/jQuery.url.js"></script>
+		    
+		    <script src="js/EasyWebsocket/contrib/chat/main.js"></script>
+	</head>
+	<body>
+
+		<div id="info">
+			'Theater 331' a shared streaming movie theater in <a href="http://github.com/mrdoob/three.js" target="_blank">three.js</a> and <a href="http://easywebsocket.org/" target="_blank">EasyWebSocket</a><br/>
+			 A Class Project for CSC417 at <i>The University of Southern Mississippi</i><br/>
+			 try typing "/change http://tinyvid.tv/file/3d198wqepg78m.ogg" in chat to change the video for everyone
+		</div>
+
+		<script type="text/javascript" src="../build/Three.js"></script>
+
+		<script type="text/javascript" src="js/Detector.js"></script>
+		<script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
+		<script type="text/javascript" src="js/Stats.js"></script>
+
+		
+	  <video id="video" autoplay loop style="display:none">
+	      <source id = "videoSRC" src="" type='video/ogg; codecs="theora, vorbis"'>
+	  </video>
+	  
+	  <!-- Begin Add/Modify ~ Adam Craft 04-13-2011 -->
+	  <!-- VOTE BOX #1 -->
+	  <div id="voteContainer1" style="position: absolute; left: 0px; top: 50px; z-index: 2000">
+		  <div class="voteHeader1">
+			  <span class="yesVoteLabel1">Yes:</span>
+			  <span class="yesVotes1">0</span>
+			  <span class="noVoteLabel1">No:</span>
+			  <span class="noVotes1">0</span><br>
+			  <span class="proposedVidLabel1">proposed:</span>
+			  <span class="proposedVideo1"></span>
+		  </div>
+		  <div class="voteFooter1">
+			  <form id="vote-form1" action="#">
+				  <label for="yesValue1"><input name="radioButton1" id="yesValue1" type="radio" value="Yes" />Yes</label>
+				  <label for="noValue1"><input name="radioButton1" id="noValue1" type="radio" Value="No" />No</label><br>
+				  <input class="proposedVid1" id="proposedVid1" type="text" />
+				  <input class="voteButton1" type="button" value="Vote" />
+			  </form>
+		  </div>
+	  </div>
+	  <!-- VOTE BOX #2 -->
+	  <div id="voteContainer2" style="position: absolute; left: 0; top: 150px; z-index: 2000">
+		  <div class="voteHeader2">
+			  <span class="yesVoteLabel2">Yes:</span>
+			  <span class="yesVotes2">0</span>
+			  <span class="noVoteLabel2">No:</span>
+			  <span class="noVotes2">0</span><br>
+			  <span class="proposedVidLabel2">proposed:</span>
+			  <span class="proposedVideo2"></span>
+		  </div>
+		  <div class="voteFooter2">
+			  <form id="vote-form2" action="#">
+				  <label for="yesValue2"><input name="radioButton2" id="yesValue2" type="radio" value="Yes" />Yes</label>
+				  <label for="noValue2"><input name="radioButton2" id="noValue2" type="radio" Value="No" />No</label><br>
+				  <input class="proposedVid2" id="proposedVid2" type="text" />
+				  <input class="voteButton2" type="button" value="Vote" />
+			  </form>
+		  </div>
+	  </div>
+	  <!-- VOTE BOX #3 -->
+	  <div id="voteContainer3" style="position: absolute; left: 0px; top: 250px; z-index: 2000">
+		  <div class="voteHeader3">
+			  <span class="yesVoteLabel3">Yes:</span>
+			  <span class="yesVotes3">0</span>
+			  <span class="noVoteLabel3">No:</span>
+			  <span class="noVotes3">0</span><br>
+			  <span class="proposedVidLabel3">proposed:</span>
+			  <span class="proposedVideo3"></span>
+		  </div>
+		  <div class="voteFooter3">
+			  <form id="vote-form3" action="#">
+				  <label for="yesValue3"><input name="radioButton3" id="yesValue3" type="radio" value="Yes" />Yes</label>
+				  <label for="noValue3"><input name="radioButton3" id="noValue3" type="radio" Value="No" />No</label><br>
+				  <input class="proposedVid3" id="proposedVid3" type="text" />
+				  <input class="voteButton3" type="button" value="Vote" />
+			  </form>
+		  </div>
+	  </div>
+	  <!-- VOTE BOX #4 -->
+	  <div id="voteContainer4" style="position: absolute; left: 0px; top: 350px; z-index: 2000">
+		  <div class="voteHeader4">
+			  <span class="yesVoteLabel4">Yes:</span>
+			  <span class="yesVotes4">0</span>
+			  <span class="noVoteLabel4">No:</span>
+			  <span class="noVotes4">0</span><br>
+			  <span class="proposedVidLabel4">proposed:</span>
+			  <span class="proposedVideo4"></span>
+		  </div>
+		  <div class="voteFooter4">
+			  <form id="vote-form4" action="#">
+				  <label for="yesValue4"><input name="radioButton4" id="yesValue4" type="radio" value="Yes" />Yes</label>
+				  <label for="noValue4"><input name="radioButton4" id="noValue4" type="radio" Value="No" />No</label><br>
+				  <input class="proposedVid4" id="proposedVid4" type="text" />
+				  <input class="voteButton4" type="button" value="Vote" />
+			  </form>
+		  </div>
+	  </div>
+	  <!-- VOTE BOX #5 -->
+	  <div id="voteContainer5" style="position: absolute; left: 0px; top: 450px; z-index: 2000">
+		  <div class="voteHeader5">
+			  <span class="yesVoteLabel5">Yes:</span>
+			  <span class="yesVotes5">0</span>
+			  <span class="noVoteLabel5">No:</span>
+			  <span class="noVotes5">0</span><br>
+			  <span class="proposedVidLabel5">proposed:</span>
+			  <span class="proposedVideo5"></span>
+		  </div>
+		  <div class="voteFooter5">
+			  <form id="vote-form5" action="#">
+				  <label for="yesValue5"><input name="radioButton5" id="yesValue5" type="radio" value="Yes" />Yes</label>
+				  <label for="noValue5"><input name="radioButton5" id="noValue5" type="radio" Value="No" />No</label><br>
+				  <input class="proposedVid5" id="proposedVid5" type="text" />
+				  <input class="voteButton5" type="button" value="Vote" />
+			  </form>
+		  </div>
+	  </div>
+	  <!-- End Add/Modify ~ Adam Craft 04-13-2011 -->
+<!--Modification by Justin Pham 5/5/2011 -->
+	<div id="searchcontainer" style="position:absolute; left: 0px; top: 550px; z-index: 2000">
+		<div class="searchheader">
+			<span class"label">Tinyvid Search</span>
+		</div>	
+		<div class="searchform">
+			<form id="search-form" action="#">
+				<input id="search-input" type="text" />
+				<input id="search-submit" type="submit" value="Search" onclick="tiny_search()"/>
+			</form>
+		</div>
+		<div id="temptest">
+		</div>
+	</div>
+<!--End Modification by Justin Pham 5/5/2011 -->
+	  
+	<!--Modification by Robbie Merkosky 5/5/2011 -->
+	<div id="container" style="position:absolute; left :80%;z-index:2000; background-color:rgba(0,0,0,0.5); border-radius:5px; width:240px">
+	  <div id="fb-root"></div>
+      <script src="http://connect.facebook.net/en_US/all.js">
+      </script>
+      <script type="text/javascript">
+	FB.init({ 
+		appId:'149294198466899', cookie:true, 
+		status:true, xfbml:true 
+	});
+	FB.api('/me', function(user) {
+		if(user != null) {
+            var image = document.getElementById('image');
+            image.src = 'http://graph.facebook.com/' + user.id + '/picture';
+            var name = document.getElementById('name');
+            name.innerHTML = user.name;
+			var u = document.getElementById('u');
+			u.innerHTML = user.name;
+        }
+	});
+
+		//Testers
+		$('#image').click(function() {
+		alert('test2');
+			$('#loaddiv').fadeOut('slow').load('reload.php').fadeIn("slow");
+         });
+       </script>
+			<div id="log-button">
+				<fb:login-button autologoutlink="true" perms="email,user_birthday,status_update,publish_stream"></fb:login-button>
+			</div>
+           <div align="center">
+           <img id="image"/>
+           <div id="name"></div>
+           </div>
+
+		<div class="header">
+			<div class="statusContainer">
+				<span class="label">Status: </span>
+				<span class="status value">Connecting</span>
+			</div>
+			<div class="userContainer">
+				<span class="label">Username: </span>
+				<span class="username value" id ="u">Unknown</span>
+				<input class="editButton" type="button" value="Edit" />
+			</div>
+		</div>
+		<hr/>
+		<div class="chatArea" style="max-height: 200px;">
+		</div>
+		<script class="tmplChatMessage" type="text/x-jquery-tmpl">
+			
+				<div class="userImage" style="width:35px; height:27px; float:left;">${userImage}</div>
+				<div style="float:left; width:200px; text-align:left">
+					<span class="username">${username}</span> :
+					<span class="message">${message}</span>
+				</div>
+				<div style="clear:both"></div>
+			
+		</script>
+		<script class="tmplChatJoin" type="text/x-jquery-tmpl">
+			<div>
+				<span class="username">${username}</span>
+				<span>just joined.</span>
+			</div>
+		</script>
+		<script class="tmplChatRename" type="text/x-jquery-tmpl">
+			<div>
+				<span class="oldUsername username">${oldUsername}</span>
+				<span>is renamed as</span>
+				<span class="newUsername username">${newUsername}</span>
+			</div>
+		</script>
+		<div class="footer">
+			<form id="chat-form" action="#">
+				<input class="input" id="chat-input" type="text" />
+				<input class="submit" id="chat-submit" type="submit" value="Send" />
+			</form>
+		</div>
+	</div>
+	<!--End Modification by Robbie Merkosky 5/5/2011-->
+	
+	
+<!--Modification by Justin Pham 5/5/2011 -->
+		<script type="text/javascript">
+			function tiny_search()
+			{
+				var item = document.getElementById("search-input").value;
+				var url = "http://tinyvid.tv/search?q=" + item;
+				
+
+				var yql_url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22" + encodeURIComponent(url) + "%22%20and%20xpath%3D'%2F%2Fdiv%5B%40id%3D%22content%22%5D'&format=json&callback=";
+			
+
+				$.getJSON(yql_url, function(data) {
+					console.log(data.query.results);
+					var items = data.query.results.div.table[1].tr;   
+     					var output = '';  
+      					var no_items=items.length; 
+      					for(var i=0;i<no_items;i++){  
+        					var link = items[i].td[1].a.href;
+        					var desc = items[i].td[1].a.content; 
+						var image = items[i].td[0].div.div.div.img.src;
+						var tagarray = link.split("/");
+						var tag = tagarray[4];
+        					//output +="<h3><td><a href='" + link + "'><div class='"poster outer"' style='"width:80;height:60;background-color:black;"'><div class='"middle"'><div class='"inner"'><img style='"width:80px;height: auto;border-style:none"' src='" + image + "'></div></div></div></a></td><td><a href='" + link + "'>" + desc +"</a></td></h3><td></td>";
+						output +="<h3><td><img src='" + image + "' onclick=consolepush('"+tag+"')></td></h3><h3><td><a href='" + link + "'>" +desc+" </a></td></h3> <hr/>";
+						//console.log(picture); 
+      					}  
+      				// Place results in div tag  
+      				document.getElementById('temptest').innerHTML = output
+
+				});
+			}
+			function consolepush(tag) {
+				var url = "http://tinyvid.tv/file/"+tag+".ogg"
+				console.log(url);
+				if ($('#proposedVid1').val() == '') {
+  					 $('#proposedVid1').val(url);
+				} else 
+				if ($('#proposedVid2').val() == '') {
+  					 $('#proposedVid2').val(url);
+				} else 
+				if ($('#proposedVid3').val() == '') {
+  					 $('#proposedVid3').val(url);
+				} else 
+				if ($('#proposedVid4').val() == '') {
+  					 $('#proposedVid4').val(url);
+				} else 
+				if ($('#proposedVid5').val() == '') {
+  					 $('#proposedVid5').val(url);
+				} 
+		
+			}
+		</script>
+<!--End Modification by Justin Pham 5/5/2011 -->
+		<script type="text/javascript">
+
+			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+			var container, stats;
+			var camera, scene, renderer;
+			var video, texture, material, mesh;
+			var zmesh = [];
+			var mouseX = 0;
+			var mouseY = 0;
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+			var postprocessing = { enabled: true };
+			var cube_count,
+				meshes = [],
+				materials = [],
+				xgrid = 1,
+				ygrid = 1;
+
+			init();
+			animate();
+
+			function init() {
+				container = document.createElement('div');
+				document.body.appendChild( container );
+
+				camera = new THREE.Camera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.z = 700;
+
+				scene = new THREE.Scene();
+				var light = new THREE.DirectionalLight( 0xffffff );
+				light.position.set( 0.5, 2, 1 );
+				light.position.normalize();
+				scene.addLight( light );
+
+				var pointLight = new THREE.PointLight( 0xffffff );
+				 pointLight.position.set( 0, 50, -200 );
+
+				pointLight.intensity = .5;
+				
+				scene.addLight( pointLight );
+
+				renderer = new THREE.WebGLRenderer( { antialias: false } );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+				
+				initPostprocessing();
+				renderer.autoClear = false;
+
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+				//container.appendChild( stats.domElement );
+
+				// Modification by Aaron Craft 04/19/2011					
+				setvideo("http://bennugd-vlc.googlecode.com/files/big_buck_bunny_480p.ogv");
+				// End Modification by Aaron Craft 04/19/2011	
+				
+				var loader = new THREE.JSONLoader(),
+					callbackMale   = function( geometry ) { createScene( geometry,  0, 0, 0, 0 ) },
+					callbackFemale = function( geometry ) { createScene( geometry, 0, 0, 0, 0 ) };
+
+				loader.load( { model: "obj/theater.js", callback: callbackMale } );
+		  
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+				
+
+			}
+
+		      function createScene( geometry, x, y, z, b ) {
+
+				console.log(geometry);
+								
+				var num = 1;
+				for (var i = 0; i < num; i++){
+				
+                               
+				    geometry.materials[1][0] = new THREE.MeshLambertMaterial( {  color:  0x222221 ,shading: THREE.SmoothShading } );
+				    
+				    zmesh[i] = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial() );
+				    
+				    //zmesh[i].position.x = 0;
+				    //zmesh[i].position.z = 300;
+				    //zmesh[i].position.y = -60;
+
+				    zmesh[i].position.x = 0;
+				    zmesh[i].position.z = 300;
+				    zmesh[i].position.y = 60;
+				    zmesh[i].rotation.y = -Math.PI/2;
+				    
+				    zmesh[i].scale.x = zmesh[i].scale.y = zmesh[i].scale.z = 30;
+				    //zmesh[i].overdraw = true;
+				    zmesh[i].updateMatrix();
+				    //THREE.SceneUtils.addMesh(scene, geometry,45,x+i*250-75*num,0,45,0,0,0,new THREE.MeshFaceMaterial());
+				    scene.addObject(zmesh[i]);				    
+				}
+
+
+			}
+			function change_uvs( geometry, unitx, unity, offsetx, offsety ) {
+				var i, j, uv;
+				for ( i = 0; i < geometry.faceVertexUvs[ 0 ].length; i++ ) {
+					uv = geometry.faceVertexUvs[ 0 ][ i ];
+					for ( j = 0; j < uv.length; j++ ) {
+						uv[j].u = ( uv[j].u + offsetx ) * unitx;
+						uv[j].v = ( uv[j].v + offsety ) * unity;
+					}
+				}
+			}
+
+			function initPostprocessing() {
+				postprocessing.scene = new THREE.Scene();
+				
+				postprocessing.camera = new THREE.Camera();
+				postprocessing.camera.projectionMatrix = THREE.Matrix4.makeOrtho( window.innerWidth / - 2, window.innerWidth / 2,  window.innerHeight / 2, window.innerHeight / - 2, -10000, 10000 );
+				postprocessing.camera.position.z = 100;
+
+				var pars = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter };
+				postprocessing.rtTexture1 = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, pars );
+				postprocessing.rtTexture2 = new THREE.WebGLRenderTarget( 512, 512, pars );
+				postprocessing.rtTexture3 = new THREE.WebGLRenderTarget( 512, 512, pars );
+
+				var screen_shader = THREE.ShaderUtils.lib["screen"];
+				var screen_uniforms = THREE.UniformsUtils.clone( screen_shader.uniforms );
+
+				screen_uniforms["tDiffuse"].texture = postprocessing.rtTexture1;
+				screen_uniforms["opacity"].value = 1.0;
+
+				postprocessing.materialScreen = new THREE.MeshShaderMaterial( {
+					uniforms: screen_uniforms,
+					vertexShader: screen_shader.vertexShader,
+					fragmentShader: screen_shader.fragmentShader,
+					blending: THREE.AdditiveBlending,
+					transparent: true
+				} );
+
+				var convolution_shader = THREE.ShaderUtils.lib["convolution"];
+				var convolution_uniforms = THREE.UniformsUtils.clone( convolution_shader.uniforms );
+
+				postprocessing.blurx = new THREE.Vector2( 0.001953125, 0.0 ),
+				postprocessing.blury = new THREE.Vector2( 0.0, 0.001953125 );
+
+				convolution_uniforms["tDiffuse"].texture = postprocessing.rtTexture1;
+				convolution_uniforms["uImageIncrement"].value = postprocessing.blurx;
+				convolution_uniforms["cKernel"].value = THREE.ShaderUtils.buildKernel( 4.0 );
+
+				postprocessing.materialConvolution = new THREE.MeshShaderMaterial( {
+					uniforms: convolution_uniforms,
+					vertexShader:   "#define KERNEL_SIZE 25.0\n" + convolution_shader.vertexShader,
+					fragmentShader: "#define KERNEL_SIZE 25\n"   + convolution_shader.fragmentShader
+				} );
+
+				postprocessing.quad = new THREE.Mesh( new THREE.Plane( window.innerWidth, window.innerHeight ), postprocessing.materialConvolution );
+				postprocessing.quad.position.z = -500;
+				postprocessing.scene.addObject( postprocessing.quad );
+			}
+
+			function onDocumentMouseMove(event) {
+				mouseX = ( event.clientX - windowHalfX );
+				mouseY = ( event.clientY - windowHalfY ) * 0.3;
+			}
+
+			//
+
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+				stats.update();
+			}
+
+			var h, counter = 1;
+			function render() {
+				var time = new Date().getTime() * 0.00005;
+				camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+				//camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+
+				if ( video.readyState === video.HAVE_ENOUGH_DATA ) {
+					if ( texture ) texture.needsUpdate = true;
+				}
+
+// 				for( i = 0; i < cube_count; i++ ) {
+// 					material = materials[i];
+// 					h = ( 360 * ( material.hue + time ) % 360 ) / 360;
+// 					material.color.setHSV( h, material.saturation, 1 );
+// 				}
+// 
+// 				if( counter % 1000  > 200 ) {
+// 					for( i = 0; i < cube_count; i++ ) {
+// 						mesh = meshes[i];
+// 						mesh.rotation.x += 10 * mesh.dx;
+// 						mesh.rotation.y += 10 * mesh.dy;
+// 						mesh.position.x += 200 * mesh.dx;
+// 						mesh.position.y += 200 * mesh.dy;
+// 						mesh.position.z += 400 * mesh.dx;
+// 					}
+// 				}
+// 
+// 				if( counter % 1000  == 0 ) {
+// 					for( i = 0; i < cube_count; i++ ) {
+// 						mesh = meshes[i];
+//						mesh.dx *= -1;
+// 						mesh.dy *= -1;
+// 					}
+// 				}
+// 
+// 				counter++;
+
+				renderer.clear();
+				if ( postprocessing.enabled ) {
+					// Render scene into texture
+					renderer.render( scene, camera, postprocessing.rtTexture1, true );
+
+					// Render quad with blured scene into texture (convolution pass 1)
+					postprocessing.quad.materials = [ postprocessing.materialConvolution ];
+
+					postprocessing.materialConvolution.uniforms.tDiffuse.texture = postprocessing.rtTexture1;
+					postprocessing.materialConvolution.uniforms.uImageIncrement.value = postprocessing.blurx;
+
+					renderer.render( postprocessing.scene, postprocessing.camera, postprocessing.rtTexture2, true );
+
+					// Render quad with blured scene into texture (convolution pass 2)
+					postprocessing.materialConvolution.uniforms.tDiffuse.texture = postprocessing.rtTexture2;
+					postprocessing.materialConvolution.uniforms.uImageIncrement.value = postprocessing.blury;
+
+					renderer.render( postprocessing.scene, postprocessing.camera, postprocessing.rtTexture3, true );
+
+					// Render original scene with superimposed blur to texture
+					postprocessing.quad.materials = [ postprocessing.materialScreen ];
+
+					postprocessing.materialScreen.uniforms.tDiffuse.texture = postprocessing.rtTexture3;
+					postprocessing.materialScreen.uniforms.opacity.value = 1.3;
+
+					renderer.render( postprocessing.scene, postprocessing.camera, postprocessing.rtTexture1, false );
+
+					// Render to screen
+					postprocessing.materialScreen.uniforms.tDiffuse.texture = postprocessing.rtTexture1;
+					renderer.render( postprocessing.scene, postprocessing.camera );
+
+				} else {
+					renderer.render( scene, camera );
+				}
+			}
+			
+			function stopVideo()
+			{
+				video = document.getElementById('video');
+				video.pause();
+			}
+			
+			// Modification by Aaron Craft 04/19/2011
+			function setvideo(url){
+				video = document.getElementById('video');	
+				video.pause();
+				video.src = url;
+				video.play();			
+				
+				texture = new THREE.Texture( video );
+				texture.minFilter = THREE.LinearFilter;
+				texture.magFilter = THREE.LinearFilter;
+
+				var i, j, ux, uy, ox, oy,
+					geometry,
+					xsize, ysize;
+
+				ux = 1 / xgrid;
+				uy = 1 / ygrid;
+
+				xsize = window.innerWidth/2.8;
+				ysize = window.innerHeight/3.8;
+
+				var parameters = { color: 0xffffff, map: texture },
+				material_base = new THREE.MeshLambertMaterial( parameters );
+
+				renderer.initMaterial( material_base, scene.lights, scene.fog );
+
+				cube_count = 0;
+
+				for( i = 0; i < xgrid; i++)
+				for( j = 0; j < ygrid; j++) {
+
+					ox = i;
+					oy = j;
+
+					//geometry = new THREE.Cube( xsize, ysize, xsize );
+					geometry = new THREE.Plane( 500, 300, 15, 10 );
+					change_uvs( geometry, ux, uy, ox, oy );
+
+					materials[ cube_count ] = new THREE.MeshLambertMaterial( parameters );
+					material = materials[ cube_count ];
+					material.hue = i/xgrid;
+					material.saturation = j/ygrid;
+					material.color.setHSV( material.hue, material.saturation, 1 );
+
+					mesh = new THREE.Mesh( geometry, material );
+					mesh.position.x =   0;
+					mesh.position.y = 35;
+					mesh.position.z = 50;
+					mesh.scale.x = mesh.scale.y = mesh.scale.z = 1;
+
+					scene.addObject(mesh);
+
+					mesh.dx = 0.001 * ( 0.5 - Math.random() );
+					mesh.dy = 0.001 * ( 0.5 - Math.random() );
+
+					meshes[ cube_count ] = mesh;
+
+					cube_count += 1;
+				}		
+			}
+			// End Modification by Aaron Craft 04/19/2011	
+
+		</script>
+	</body>
+</html>
