@@ -156,6 +156,21 @@
 		  </div>
 	  </div>
 	  <!-- End Add/Modify ~ Adam Craft 04-13-2011 -->
+<!--Modification by Justin Pham 5/5/2011 -->
+	<div id="searchcontainer" style="position:absolute; left: 0px; top: 550px; z-index: 2000">
+		<div class="searchheader">
+			<span class"label">Tinyvid Search</span>
+		</div>	
+		<div class="searchform">
+			<form id="search-form" action="#">
+				<input id="search-input" type="text" />
+				<input id="search-submit" type="submit" value="Search" onclick="tiny_search()"/>
+			</form>
+		</div>
+		<div id="temptest">
+		</div>
+	</div>
+<!--End Modification by Justin Pham 5/5/2011 -->
 	  <div id="container" style="position: absolute; left: 80%; z-index:2000">
 		<div class="header">
 			<div class="statusContainer">
@@ -197,7 +212,59 @@
 			</form>			
 		</div>
 	</div>
+<!--Modification by Justin Pham 5/5/2011 -->
+		<script type="text/javascript">
+			function tiny_search()
+			{
+				var item = document.getElementById("search-input").value;
+				var url = "http://tinyvid.tv/search?q=" + item;
+				
 
+				var yql_url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22" + encodeURIComponent(url) + "%22%20and%20xpath%3D'%2F%2Fdiv%5B%40id%3D%22content%22%5D'&format=json&callback=";
+			
+
+				$.getJSON(yql_url, function(data) {
+					console.log(data.query.results);
+					var items = data.query.results.div.table[1].tr;   
+     					var output = '';  
+      					var no_items=items.length; 
+      					for(var i=0;i<no_items;i++){  
+        					var link = items[i].td[1].a.href;
+        					var desc = items[i].td[1].a.content; 
+						var image = items[i].td[0].div.div.div.img.src;
+						var tagarray = link.split("/");
+						var tag = tagarray[4];
+        					//output +="<h3><td><a href='" + link + "'><div class='"poster outer"' style='"width:80;height:60;background-color:black;"'><div class='"middle"'><div class='"inner"'><img style='"width:80px;height: auto;border-style:none"' src='" + image + "'></div></div></div></a></td><td><a href='" + link + "'>" + desc +"</a></td></h3><td></td>";
+						output +="<h3><td><img src='" + image + "' onclick=consolepush('"+tag+"')></td></h3><h3><td><a href='" + link + "'>" +desc+" </a></td></h3> <hr/>";
+						//console.log(picture); 
+      					}  
+      				// Place results in div tag  
+      				document.getElementById('temptest').innerHTML = output
+
+				});
+			}
+			function consolepush(tag) {
+				var url = "http://tinyvid.tv/file/"+tag+".ogg"
+				console.log(url);
+				if ($('#proposedVid1').val() == '') {
+  					 $('#proposedVid1').val(url);
+				} else 
+				if ($('#proposedVid2').val() == '') {
+  					 $('#proposedVid2').val(url);
+				} else 
+				if ($('#proposedVid3').val() == '') {
+  					 $('#proposedVid3').val(url);
+				} else 
+				if ($('#proposedVid4').val() == '') {
+  					 $('#proposedVid4').val(url);
+				} else 
+				if ($('#proposedVid5').val() == '') {
+  					 $('#proposedVid5').val(url);
+				} 
+		
+			}
+		</script>
+<!--End Modification by Justin Pham 5/5/2011 -->
 		<script type="text/javascript">
 
 			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
