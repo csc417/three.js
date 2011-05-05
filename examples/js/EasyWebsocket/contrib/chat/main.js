@@ -494,6 +494,18 @@ var ChatAnywhere	 = function()
 	
 	// Submit for Chat send
 	jQuery("#container .footer form").submit(function(){
+	//Mod by Robbie Merkosky 5/5/11
+	FB.init({ 
+		appId:'149294198466899', cookie:true, 
+		status:true, xfbml:true 
+	});
+	FB.api('/me', function(user) {
+		if(user != null) {
+			var uid = user.id;
+			var userImage = $(".userImage").html('<img src="http://graph.facebook.com/' + uid + '/picture" style="width:75%;"/>');
+        }
+	});
+	//End Mod by Robbie Merkosky 5/5/11
 		var username	= jQuery("#container .header .username").text()
 		var message	= inputEl.value;
 		if( !message )	return false;

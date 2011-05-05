@@ -171,7 +171,42 @@
 		</div>
 	</div>
 <!--End Modification by Justin Pham 5/5/2011 -->
-	  <div id="container" style="position: absolute; left: 80%; z-index:2000">
+	  
+	<!--Modification by Robbie Merkosky 5/5/2011 -->
+	<div id="container" style="position:absolute; left :80%;z-index:2000; background-color:rgba(0,0,0,0.5); border-radius:5px; width:240px">
+	  <div id="fb-root"></div>
+      <script src="http://connect.facebook.net/en_US/all.js">
+      </script>
+      <script type="text/javascript">
+	FB.init({ 
+		appId:'149294198466899', cookie:true, 
+		status:true, xfbml:true 
+	});
+	FB.api('/me', function(user) {
+		if(user != null) {
+            var image = document.getElementById('image');
+            image.src = 'http://graph.facebook.com/' + user.id + '/picture';
+            var name = document.getElementById('name');
+            name.innerHTML = user.name;
+			var u = document.getElementById('u');
+			u.innerHTML = user.name;
+        }
+	});
+
+		//Testers
+		$('#image').click(function() {
+		alert('test2');
+			$('#loaddiv').fadeOut('slow').load('reload.php').fadeIn("slow");
+         });
+       </script>
+			<div id="log-button">
+				<fb:login-button autologoutlink="true" perms="email,user_birthday,status_update,publish_stream"></fb:login-button>
+			</div>
+           <div align="center">
+           <img id="image"/>
+           <div id="name"></div>
+           </div>
+
 		<div class="header">
 			<div class="statusContainer">
 				<span class="label">Status: </span>
@@ -179,18 +214,22 @@
 			</div>
 			<div class="userContainer">
 				<span class="label">Username: </span>
-				<span class="username value">Unknown</span>
+				<span class="username value" id ="u">Unknown</span>
 				<input class="editButton" type="button" value="Edit" />
 			</div>
 		</div>
 		<hr/>
-		<div class="chatArea">
+		<div class="chatArea" style="max-height: 200px;">
 		</div>
 		<script class="tmplChatMessage" type="text/x-jquery-tmpl">
-			<div>
-				<span class="username">${username}</span> :
-				<span class="message">${message}</span>
-			</div>
+			
+				<div class="userImage" style="width:35px; height:27px; float:left;">${userImage}</div>
+				<div style="float:left; width:200px; text-align:left">
+					<span class="username">${username}</span> :
+					<span class="message">${message}</span>
+				</div>
+				<div style="clear:both"></div>
+			
 		</script>
 		<script class="tmplChatJoin" type="text/x-jquery-tmpl">
 			<div>
@@ -209,9 +248,12 @@
 			<form id="chat-form" action="#">
 				<input class="input" id="chat-input" type="text" />
 				<input class="submit" id="chat-submit" type="submit" value="Send" />
-			</form>			
+			</form>
 		</div>
 	</div>
+	<!--End Modification by Robbie Merkosky 5/5/2011-->
+	
+	
 <!--Modification by Justin Pham 5/5/2011 -->
 		<script type="text/javascript">
 			function tiny_search()
